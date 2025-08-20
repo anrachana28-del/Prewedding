@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>Wedding Guest SPA - Full Width Love Image</title>
+<style>
+body { margin:0; padding:0; font-family: 'Khmer OS Battambang', Tahoma, Geneva, Verdana, sans-serif; background:#fff8f0; color:#333; }
+nav { display:flex; justify-content:center; gap:15px; padding:15px; background:#c3e6cb; flex-wrap:wrap; }
+nav button { padding:10px 20px; border:none; border-radius:25px; background:#28a745; color:white; font-weight:bold; cursor:pointer; transition:0.3s; }
+nav button:hover { background:#218838; }
+nav button.active-tab { background:#1e7e34; }
+
+.view { display:none; }
+.active { display:block; }
+
+/* Full-width Image */
+.center-img {
+  position: relative;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+/* Image zoom animation (slow left-right sway + scale) */
+.center-img {
+  position: relative;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+/* Image zoom + sway */
+.center-img img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  animation: imgZoomSway 20s ease-in-out infinite alternate;
+}
+@keyframes imgZoomSway {
+  0%   { transform: scale(1) translateX(0); }
+  25%  { transform: scale(1.05) translateX(-10px); }
+  50%  { transform: scale(1.1) translateX(10px); }
+  75%  { transform: scale(1.05) translateX(-10px); }
+  100% { transform: scale(1) translateX(0); }
+}
+
+/* Overlay text heartbeat + neon glow + shimmer */
+.overlay-text-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  background: rgba(0,0,0,0.4);
+  padding: 15px 30px;
+  border-radius: 15px;
+  white-space: nowrap;
+  text-shadow: 0 0 5px #fff, 0 0 10px #ff6b6b, 0 0 20px #ff8787, 0 0 30px #ff6b6b, 0 0 40px #ff8787;
+  animation: heartbeat 1.5s infinite, shimmer 3s linear infinite;
+  overflow: hidden;
+}
+@keyframes heartbeat {
+  0%,100% { transform: translate(-50%, -50%) scale(1); }
+  25% { transform: translate(-50%, -50%) scale(1.05); }
+  50% { transform: translate(-50%, -50%) scale(1.1); }
+  75% { transform: translate(-50%, -50%) scale(1.05); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.overlay-text-center::after {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0; bottom:0;
+  background: linear-gradient(120deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.2) 100%);
+  background-size: 200% 100%;
+  border-radius: 15px;
+  mix-blend-mode: screen;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Floating elements */
+@keyframes floatSway {
+  0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity:1; }
+  25%  { transform: translateY(-50px) translateX(10px) rotate(5deg); opacity:0.8; }
+  50%  { transform: translateY(-100px) translateX(-10px) rotate(-5deg); opacity:0.7; }
+  75%  { transform: translateY(-150px) translateX(10px) rotate(5deg); opacity:0.5; }
+  100% { transform: translateY(-200px) translateX(0) rotate(0deg); opacity:0; }
+}
+.love-floating, .name-floating, .flower-floating {
+  position: absolute;
+  pointer-events: none;
+  font-weight: bold;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Responsive overlay text */
+@media (max-width:768px){
+  .overlay-text-center { font-size: 2rem; padding:10px 20px; }
+}
+.overlay-text-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  background: rgba(0,0,0,0.4);
+  padding: 15px 30px;
+  border-radius: 15px;
+  white-space: nowrap;
+  text-shadow: 0 0 5px #fff, 0 0 10px #ff6b6b, 0 0 20px #ff8787, 0 0 30px #ff6b6b, 0 0 40px #ff8787;
+  animation: neonGlow 2s ease-in-out infinite alternate, shimmer 3s linear infinite;
+}
+
+/* Glow pulsating animation */
+@keyframes neonGlow {
+  0%   { text-shadow: 0 0 5px #fff, 0 0 10px #ff6b6b, 0 0 20px #ff8787, 0 0 30px #ff6b6b, 0 0 40px #ff8787; }
+  50%  { text-shadow: 0 0 10px #fff, 0 0 20px #ff6b6b, 0 0 30px #ff8787, 0 0 40px #ff6b6b, 0 0 50px #ff8787; }
+  100% { text-shadow: 0 0 5px #fff, 0 0 10px #ff6b6b, 0 0 20px #ff8787, 0 0 30px #ff6b6b, 0 0 40px #ff8787; }
+}
+
+/* Shimmer moving highlight */
+@keyframes shimmer {
+  0% { background-position: -500px 0; }
+  100% { background-position: 500px 0; }
+}
+
+.overlay-text-center::after {
+  content: '';
+  position: absolute;
+  top:0; left:0; right:0; bottom:0;
+  background: linear-gradient(120deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.2) 100%);
+  background-size: 200% 100%;
+  border-radius: 15px;
+  mix-blend-mode: screen;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Map & Modal */
+.map-buttons button { padding:10px 20px; border-radius:25px; border:none; cursor:pointer; color:white; font-weight:bold; flex:1 1 30%; display:flex; align-items:center; justify-content:center; gap:5px; transition:0.3s; margin:5px; }
+.modal { display:none; position:fixed; z-index:999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); }
+.modal-content { background:#fff; position:fixed; left:50%; bottom:-100%; transform:translateX(-50%); width:90%; max-width:350px; border-radius:15px; text-align:center; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.3); transition: bottom 0.4s ease-in-out, opacity 0.5s; display:flex; flex-direction:column; align-items:center; opacity:0; }
+.modal-content.show { bottom:50px; opacity:1; }
+.modal-close { position:absolute; top:10px; right:15px; font-size:1.5rem; font-weight:bold; color:#333; cursor:pointer; }
+.share-circle { display:flex; align-items:center; justify-content:center; border-radius:50%; width:60px; height:60px; cursor:pointer; transition:0.3s; margin:5px; }
+.share-circle img { width:60px; height:60px; }
+.download-btn { display:flex; align-items:center; justify-content:center; width:60px; height:60px; border-radius:50%; border:none; background:#28a745; color:white; font-size:1.2rem; cursor:pointer; margin-top:15px; transition:0.3s; }
+.download-btn:hover { transform: scale(1.1); }
+
+@media (max-width:768px){
+  .overlay-text-center { font-size:2rem; padding:10px 20px; }
+}
+</style>
+
+<style>
+/* Floating animation */
+@keyframes floatSway {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); opacity:1; }
+  25% { transform: translateY(-50px) translateX(10px) rotate(5deg); opacity:0.8; }
+  50% { transform: translateY(-100px) translateX(-10px) rotate(-5deg); opacity:0.7; }
+  75% { transform: translateY(-150px) translateX(10px) rotate(5deg); opacity:0.5; }
+  100% { transform: translateY(-200px) translateX(0) rotate(0deg); opacity:0; }
+}
+
+.love-floating, .name-floating {
+  position: absolute;
+  pointer-events: none;
+  font-weight: bold;
+  user-select: none;
+  white-space: nowrap;
+}
+</style>
+
+</head>
+<body>
+
+<nav>
+  <button onclick="loadPage('home', this)" class="active-tab">Home</button>
+  <button onclick="loadPage('map', this)">Map</button>
+</nav>
+
+<div id="home" class="view active">
+  <div class="center-img">
+    <img src="https://i.pinimg.com/474x/87/c0/95/87c0954d9a30df14848ac03f1e2641c3.jpg" alt="Wedding Photo">
+    <div class="overlay-text-center">កូនប្រុស ❤️ កូនស្រី</div>
+  </div>
+</div>
+
+<div id="map" class="view">
+  <h2 style="text-align:center; color:#155724;">ទីតាំងពិធីមង្គលការ</h2>
+  <div style="width:100%; height:300px; border-radius:15px; overflow:hidden; box-shadow:0 4px 8px rgba(0,0,0,0.1); margin:20px 0;">
+    <iframe src="https://www.google.com/maps?q=11.7951289,105.3758584&hl=km&z=16&output=embed" width="100%" height="100%" style="border:0; border-radius:15px;" allowfullscreen="" loading="lazy"></iframe>
+  </div>
+  <input type="text" id="mapLink" value="https://maps.app.goo.gl/y24bfXVjvTvQNVcz6" readonly style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; font-size:1rem; display:block; margin:auto; text-align:center; margin-bottom:10px; cursor:pointer;" onclick="copyMapLink()">
+  <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+    <button onclick="openShareModal()">Share Link</button>
+    <button onclick="openGoogleMaps()">មើលទីតាំង</button>
+  </div>
+  <h2 style="text-align:center; color:#155724;">ភូមិ ព្រៃលាន  ឃុំ រំលេច <br> ស្រុក ស៊ីធរកណ្តាល ខេត្ត ព្រៃវែង</h2>
+</div>
+
+<div id="shareModal" class="modal">
+  <div class="modal-content" id="modalContent">
+    <span class="modal-close" onclick="closeShareModal()">&times;</span>
+    <h3>Share to</h3>
+    <div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;">
+      <a class="share-circle telegram" href="#" target="_blank">
+        <img src="https://www.svgrepo.com/show/452115/telegram.svg" alt="Telegram">
+      </a>
+      <a class="share-circle facebook" href="#" target="_blank">
+        <img src="https://images.seeklogo.com/logo-png/34/2/messenger-2019-logo-png_seeklogo-346616.png" alt="Messenger">
+      </a>
+      <a class="share-circle whatsapp" href="#" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+      </a>
+    </div>
+    <div style="margin-top:15px;">Map QR:</div>
+    <img id="mapQR" class="modal-qr" src="" alt="Map QR code">
+    <button class="btn" onclick="downloadMapQR()"><i class="fa fa-download"></i> ទាញយក QR</button>
+  </div>
+</div>
+
+<script>
+let currentMapLink = document.getElementById("mapLink").value;
+
+function loadPage(pageId, btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active-tab'));
+  btn.classList.add('active-tab');
+}
+
+function copyMapLink(){ navigator.clipboard.writeText(currentMapLink).then(()=>alert("Copied ✅")); }
+function openGoogleMaps(){ window.open(currentMapLink,"_blank"); }
+
+function openShareModal(){
+    const modal = document.getElementById("shareModal");
+    const content = document.getElementById("modalContent");
+    modal.style.display = "block";
+    setTimeout(()=>{ content.classList.add("show"); }, 50);
+    const mapLinkEncoded = encodeURIComponent(currentMapLink);
+    document.querySelector(".telegram").href = `https://t.me/share/url?url=${mapLinkEncoded}&text=ទីតាំងពិធីមង្គលការ នៅ ភូមិ ព្រៃលាន  ឃុំ រំលេច ស្រុក ស៊ីធរកណ្តាល ខេត្ត ព្រៃវែង`;
+    document.querySelector(".whatsapp").href = `https://api.whatsapp.com/send?text=សូមមកពិធីមង្គលការ ${mapLinkEncoded}`;
+    document.querySelector(".facebook").href = `https://www.messenger.com/t/?link=${mapLinkEncoded}`;
+    document.getElementById("mapQR").src = `https://api.qrserver.com/v1/create-qr-code/?data=${mapLinkEncoded}&size=200x200`;
+}
+
+function closeShareModal(){
+    const content = document.getElementById("modalContent");
+    content.classList.remove("show");
+    setTimeout(()=>{ document.getElementById("shareModal").style.display="none"; }, 400);
+}
+
+function downloadMapQR(){
+    const img = document.getElementById("mapQR");
+    const link = document.createElement("a");
+    link.href = img.src;
+    link.download = "WeddingMapQR.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+window.onclick = function(event) {
+    const modal = document.getElementById("shareModal");
+    if(event.target === modal) closeShareModal();
+}
+</script>
+<script>
+const weddingImage = document.querySelector(".center-img");
+const loveTexts = ["❤️","💕"];
+const nameTexts = ["ស្រីណា","សុខា"];
+const colors = ["#ff6b6b","#ff8787","#ffa8a8","#ffd6d6","#fff0f0"];
+const maxFloating = 20; // ចំនួន max floating elements
+
+function createFloating(){
+  if(document.querySelectorAll(".love-floating, .name-floating").length >= maxFloating) return;
+
+  const floating = document.createElement("div");
+  const isName = Math.random() < 0.3;
+  floating.classList.add(isName ? "name-floating" : "love-floating");
+
+  // Font size responsive
+  const size = Math.random() * 18 + 14; // 14px – 32px
+  floating.style.fontSize = size + "px";
+
+  // Random color
+  floating.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+  // Random horizontal position
+  const containerWidth = weddingImage.clientWidth;
+  floating.style.left = Math.random() * (containerWidth - size) + "px";
+  floating.style.bottom = "-30px";
+
+  // Text content
+  floating.innerText = isName ? nameTexts[Math.floor(Math.random() * nameTexts.length)] 
+                               : loveTexts[Math.floor(Math.random() * loveTexts.length)];
+
+  // Animation duration random
+  const duration = Math.random() * 4 + 3; // 3s – 7s
+  floating.style.animation = `floatSway ${duration}s linear forwards`;
+
+  // Add to container
+  weddingImage.appendChild(floating);
+
+  // Remove after animation
+  setTimeout(() => floating.remove(), duration * 1000);
+}
+
+// Interval creation (smooth)
+setInterval(createFloating, 400);
+</script>
+
+
+</body>
+</html>
