@@ -2,377 +2,175 @@
 <html lang="km">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wedding Guest SPA</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>My Pink Wedding App</title>
+<link rel="manifest" href="manifest.json">
 <style>
-body { margin:0; padding:0; font-family:'Khmer OS Battambang', Tahoma, Geneva, Verdana, sans-serif; background:#fff0f5; color:#333; overflow-x:hidden; }
+  body {
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,sans-serif;
+    background: linear-gradient(135deg,#ffe6f0,#fff5fa);
+    overflow:hidden; display:flex; flex-direction:column; height:100vh; position:relative;
+  }
 
-/* Nav */
-nav { display:flex; justify-content:center; gap:15px; padding:15px; background:#ffc0cb; flex-wrap:wrap; }
-nav button { padding:10px 20px; border:none; border-radius:25px; background:#ff69b4; color:white; font-weight:bold; cursor:pointer; transition:0.3s; }
-nav button:hover { background:#ff1493; }
-nav button.active-tab { background:#c71585; }
+  /* Floating hearts background */
+  .heart {
+    position:absolute; width:18px; height:18px; background:pink; transform:rotate(45deg);
+    border-radius:2px; opacity:0.7; animation: floatUp 10s linear infinite;
+  }
+  .heart::before, .heart::after {
+    content:""; position:absolute; width:18px; height:18px; background:pink; border-radius:50%;
+  }
+  .heart::before { top:-9px; left:0; }
+  .heart::after { left:-9px; top:0; }
 
-/* Views */
-.view { display:none; }
-.view.active { display:block; }
+  @keyframes floatUp {
+    0% { transform:translateY(100vh) scale(0.5) rotate(45deg); opacity:0; }
+    30% { opacity:1; }
+    100% { transform:translateY(-10vh) scale(1.2) rotate(45deg); opacity:0; }
+  }
 
-/* Full-width Image */
-.center-img { position: relative; width: 100%; max-height: 90vh; overflow: hidden; }
-.center-img img { width:100%; height:auto; object-fit:cover; animation: imgZoomSway 20s ease-in-out infinite alternate; }
-@keyframes imgZoomSway {
-  0%{transform:scale(1) translateX(0);} 25%{transform:scale(1.05) translateX(-10px);}
-  50%{transform:scale(1.1) translateX(10px);} 75%{transform:scale(1.05) translateX(-10px);}
-  100%{transform:scale(1) translateX(0);}
-}
+  .app-header { background:#ff4da6; color:white; padding:15px; text-align:center; font-size:20px; font-weight:bold; border-bottom-left-radius:15px; border-bottom-right-radius:15px; box-shadow:0 2px 5px rgba(0,0,0,0.1); z-index:2; }
 
-/* Overlay neon text */
-.overlay-text-center {
-  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-  color:#ff1493; font-size:3rem; font-weight:bold; text-align:center;
-  background: rgba(255,255,255,0.2); padding:15px 30px; border-radius:15px; white-space:nowrap;
-  text-shadow:0 0 5px #fff,0 0 10px #ff69b4,0 0 20px #ffb6c1,0 0 30px #ff69b4;
-  animation: neonGlow 2s ease-in-out infinite alternate;
-}
-@keyframes neonGlow {
-  0%,100%{text-shadow:0 0 5px #fff,0 0 10px #ff69b4,0 0 20px #ffb6c1,0 0 30px #ff69b4;}
-  50%{text-shadow:0 0 10px #fff,0 0 20px #ff69b4,0 0 30px #ffb6c1,0 0 40px #ff69b4;}
-}
+  .app-container { flex:1; padding:20px; overflow-y:auto; z-index:2; }
 
-/* Floating hearts */
-.love-floating, .name-floating {
-  position:absolute; pointer-events:auto; font-weight:bold; user-select:none; white-space:nowrap;
-  text-shadow:0 0 3px #fff,0 0 5px #ff69b4,0 0 10px #ffb6c1; transition:text-shadow 0.3s ease-in-out;
-}
-@keyframes floatSway {
-  0% { transform:translateY(0) translateX(0) rotate(0deg); opacity:1; }
-  25% { transform:translateY(-50px) translateX(10px) rotate(5deg); opacity:0.8; }
-  50% { transform:translateY(-100px) translateX(-10px) rotate(-5deg); opacity:0.7; }
-  75% { transform:translateY(-150px) translateX(10px) rotate(5deg); opacity:0.5; }
-  100% { transform:translateY(-200px) translateX(0) rotate(0deg); opacity:0; }
-}
-@keyframes pulseGlow {
-  0%,100% { text-shadow:0 0 3px #fff,0 0 5px #ff69b4,0 0 10px #ffb6c1; }
-  50% { text-shadow:0 0 10px #fff,0 0 15px #ff69b4,0 0 20px #ffb6c1; }
-}
-@keyframes sparkle { 0%{opacity:1;transform:scale(1) rotate(0deg);} 50%{opacity:1;transform:scale(2) rotate(360deg);} 100%{opacity:0;transform:scale(3) rotate(720deg);} }
+  .card { background:white; border-radius:20px; box-shadow:0 5px 15px rgba(0,0,0,0.1); padding:20px; margin-bottom:20px; transition: transform 0.2s ease; text-align:center; }
+  .card:hover { transform:translateY(-5px); }
+  .card h2 { margin:10px 0 5px 0; color:#ff4da6; }
+  .card p { color:#444; line-height:1.5; }
+  .card img { width:120px; height:120px; border-radius:50%; object-fit:cover; margin-bottom:10px; border:3px solid #ffb6c1; }
 
-/* Floating stickers */
-.sticker-floating {
-  position:absolute; width:40px; height:40px; pointer-events:none;
-  animation:stickerFloat linear forwards;
-  user-select:none; z-index:999;
-  transition: transform 0.3s;
-}
-@keyframes stickerFloat {
-  0% { transform:translate(0,0) rotate(0deg); opacity:1; }
-  100% { transform:translate(var(--x), var(--y)) rotate(360deg); opacity:0; }
-}
+  .btn { display:inline-block; padding:12px 20px; background:#ff4da6; color:white; border:none; border-radius:12px; font-size:16px; cursor:pointer; overflow:hidden; position:relative; }
+  .btn:hover { background:#e63e90; }
 
+  .bottom-nav { display:flex; justify-content:space-around; background:#fff; padding:10px; border-top:1px solid #eee; box-shadow:0 -2px 5px rgba(0,0,0,0.05); z-index:2; }
+  .nav-btn { text-align:center; font-size:14px; color:#555; cursor:pointer; transition:0.3s; }
+  .nav-btn.active { color:#ff4da6; font-weight:bold; text-shadow:0 0 8px rgba(255,77,166,0.7); }
 
+  #installBtn { position:fixed; bottom:80px; right:20px; z-index:1000; display:none; }
 
-/* Share Modal */
-.modal { display:none; position:fixed; z-index:999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); }
-.modal-content { background:#fff; position:fixed; left:50%; bottom:-100%; transform:translateX(-50%); width:90%; max-width:350px; border-radius:15px; text-align:center; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.3); transition: bottom 0.4s ease-in-out, opacity 0.5s; display:flex; flex-direction:column; align-items:center; opacity:0; }
-.modal-content.show { bottom:50px; opacity:1; }
-.modal-close { position:absolute; top:10px; right:15px; font-size:1.5rem; font-weight:bold; color:#333; cursor:pointer; }
-.share-circle { display:flex; align-items:center; justify-content:center; border-radius:50%; width:60px; height:60px; cursor:pointer; transition:0.3s; margin:5px; }
-.share-circle img { width:60px; height:60px; }
-.download-btn { display:flex; align-items:center; justify-content:center; width:60px; height:60px; border-radius:50%; border:none; background:#ff69b4; color:white; font-size:1.2rem; cursor:pointer; margin-top:15px; transition:0.3s; }
-.download-btn:hover { transform: scale(1.1); }
+  .view { display:none; }
+  .view.active { display:block; }
 
-/* Responsive */
-@media(max-width:768px){ .overlay-text-center{font-size:2rem;padding:10px 20px;} }
-</style>
-
-<!-- CSS additional for floating people stickers -->
-<style>
-.person-floating {
-  position:absolute; width:40px; height:40px; pointer-events:none;
-  animation:personFloat linear forwards;
-  user-select:none; z-index:999;
-  transition: transform 0.3s;
-}
-@keyframes personFloat {
-  0% { transform:translate(0,0) rotate(0deg); opacity:1; }
-  100% { transform:translate(var(--x), var(--y)) rotate(360deg); opacity:0; }
-}
-</style>
-<style>
-/* Floating stickers around buttons */
-.button-sticker {
-  position:absolute; width:20px; height:20px; pointer-events:none;
-  animation:stickerFloat linear forwards;
-  transition: transform 0.3s;
-  z-index:999;
-}
-@keyframes stickerFloat {
-  0% { transform:translate(0,0) rotate(0deg); opacity:1; }
-  100% { transform:translate(var(--x), var(--y)) rotate(360deg); opacity:0; }
-}
-.sparkle-btn {
-      position: relative;
-      padding:12px 40px;
-      font-size: 12px;
-      font-weight: bold;
-      color: white;
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      overflow: hidden;
-      transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
-      box-shadow: 0 0 20px rgba(255, 77, 77, 0.6);
-    }
-
-    .sparkle-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 40px rgba(255, 77, 77, 0.9);
-    }
-
-    /* Glow effect around button */
-    .sparkle-btn::before {
-      content: "";
-      position: absolute;
-      top: -30%;
-      left: -30%;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, rgba(255,255,255,0.5) 20%, transparent 70%);
-      animation: glowPulse 3s infinite ease-in-out;
-      border-radius: 50%;
-      z-index: 0;
-    }
-
-    /* Sparkle effect inside button */
-    .sparkle-btn::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -75%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(
-        120deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.6) 50%,
-        transparent 100%
-      );
-      animation: sparkleMove 2s infinite linear;
-      z-index: 1;
-    }
-
-    @keyframes sparkleMove {
-      0% { left: -75%; }
-      100% { left: 125%; }
-    }
-
-    @keyframes glowPulse {
-      0%, 100% { transform: scale(1); opacity: 0.6; }
-      50% { transform: scale(1.2); opacity: 1; }
-    }
+  iframe { width:100%; height:300px; border-radius:15px; border:0; }
 </style>
 </head>
 <body>
 
-<nav >
-  <button  onclick="loadPage('home', this)" class="active-tab">Home</button>
-  <button onclick="loadPage('map', this)">Map</button>
+<div class="app-header">💖 Wedding App</div>
 
+<!-- Pages -->
+<div class="app-container">
+  <div id="home" class="view active">
+    <div class="card">
+      <h2>សូមស្វាគមន៍!</h2>
+      <p>នេះជាគំរូ App UI PWA style iOS + Android។ ចុច💖 នៅលើ screen ដើម្បីបន្ថែម hearts effect។</p>
+      <button class="btn">ចាប់ផ្តើម</button>
+    </div>
+    <div class="card">
+      <h2>ព័ត៌មានថ្មីៗ</h2>
+      <p>📰 អាចបន្ថែម News Feed, Notifications, និង Content ផ្សេងៗ។</p>
+    </div>
+  </div>
 
-</nav>
+  <div id="map" class="view">
+    <h2 style="text-align:center; color:#c71585;">ទីតាំងពិធីមង្គលការ</h2>
+    <iframe id="mapFrame" src="https://www.google.com/maps?q=11.7951289,105.3758584&hl=km&z=16&output=embed" allowfullscreen="" loading="lazy"></iframe>
+    <div style="text-align:center; margin-top:10px;">
+      <button class="btn" onclick="copyMapLink()">📋 Copy Link</button>
+      <button class="btn" onclick="shareMapLink()">🔗 Share Link</button>
+    </div>
+  </div>
 
-<div id="home" class="view active">
-  <div class="center-img">
-    <img src="https://i.pinimg.com/474x/87/c0/95/87c0954d9a30df14848ac03f1e2641c3.jpg" alt="Wedding Photo">
-    <div class="overlay-text-center">កូនប្រុស ❤️ កូនស្រី</div>
-   
+  <div id="son" class="view">
+    <div class="card">
+      <img src="https://via.placeholder.com/120?text=Son1" alt="កូនប្រុស ១">
+      <h2>កូនប្រុស ១</h2>
+      <p>👦 គឺជាកូនប្រុសរបស់ពួកយើង</p>
+    </div>
+    <div class="card">
+      <img src="https://via.placeholder.com/120?text=Son2" alt="កូនប្រុស ២">
+      <h2>កូនប្រុស ២</h2>
+      <p>👦 គឺជាកូនប្រុសរបស់ពួកយើង</p>
+    </div>
   </div>
 </div>
 
-<div id="map" class="view">
-  <h2 style="text-align:center; color:#c71585;">ទីតាំងពិធីមង្គលការ</h2>
-  <div style="width:100%; height:300px; border-radius:15px; overflow:hidden; box-shadow:0 4px 8px rgba(0,0,0,0.1); margin:20px 0;">
-    <iframe src="https://www.google.com/maps?q=11.7951289,105.3758584&hl=km&z=16&output=embed" width="100%" height="100%" style="border:0; border-radius:15px;" allowfullscreen="" loading="lazy"></iframe>
-  </div>
-  <input type="text" id="mapLink" value="https://maps.app.goo.gl/y24bfXVjvTvQNVcz6" readonly onclick="copyMapLink()" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; font-size:1rem; display:block; margin:auto; text-align:center; margin-bottom:10px; cursor:pointer;">
-  <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-    <button onclick="openShareModal()">Share Link</button>
-    <button onclick="openGoogleMaps()">មើលទីតាំង</button>
-  </div>
-  <h2 style="text-align:center; color:#c71585;">ភូមិ ព្រៃលាន  ឃុំ រំលេច <br> ស្រុក ស៊ីធរកណ្តាល ខេត្ត ព្រៃវែង</h2>
+<div class="bottom-nav">
+  <div class="nav-btn active" onclick="showPage('home', this)">🏠 Home</div>
+  <div class="nav-btn" onclick="showPage('map', this)">🗺️ Map</div>
+  <div class="nav-btn" onclick="showPage('son', this)">👦 កូនប្រុស</div>
 </div>
 
-<div id="contact" class="view">
-  <h2 style="text-align:center; color:#ff1493;">ទំនាក់ទំនង</h2>
-  <p style="text-align:center;">📞 Phone: 012-345-678<br>📧 Email: example@email.com</p>
-</div>
+<!-- Install button -->
+<button id="installBtn" class="btn">📲 Install App</button>
 
-<div id="son" class="view">
-  <h2 style="text-align:center; color:#ff1493;">កូនប្រុស</h2>
-  <p style="text-align:center;">👦 កូនប្រុសរបស់ពួកយើង</p>
-</div>
-
-<div id="daughter" class="view">
-  <h2 style="text-align:center; color:#ff1493;">កូនស្រី</h2>
-  <p style="text-align:center;">👧 កូនស្រីរបស់ពួកយើង</p>
-</div>
-
-<!-- Share Modal -->
-<div id="shareModal" class="modal">
-  <div class="modal-content" id="modalContent">
-    <span class="modal-close" onclick="closeShareModal()">&times;</span>
-    <h3>Share via Telegram</h3>
-    <a class="share-circle telegram" href="#" target="_blank"><img src="https://www.svgrepo.com/show/452115/telegram.svg" alt="Telegram"></a>
-    <div style="margin-top:15px;">Map QR:</div>
-    <img id="mapQR" class="modal-qr" src="" alt="Map QR code" style="margin-top:10px; width:180px; height:180px;">
-    <button class="download-btn" onclick="downloadMapQR()"><i class="fa fa-download"></i> Download</button>
-  </div>
-</div>
-<nav >
-
-  <button  class="sparkle-btn"onclick="loadPage('son', this)">កូនប្រុស</button>
-  <button  class="sparkle-btn" onclick="loadPage('daughter', this)">កូនស្រី</button>
-</nav>
 <script>
-// Page navigation
-function loadPage(pageId, btn){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
-  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active-tab'));
-  btn.classList.add('active-tab');
-}
-
-// Map functions
-let currentMapLink = document.getElementById("mapLink").value;
-function copyMapLink(){ navigator.clipboard.writeText(currentMapLink).then(()=>alert("Copied ✅")); }
-function openGoogleMaps(){ window.open(currentMapLink,"_blank"); }
-
-// Share modal
-function detectDevice(){ return /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent)?"mobile":"desktop"; }
-function setShareLinks(url){
-  const encoded = encodeURIComponent(url);
-  const telegram = document.querySelector(".telegram");
-  if(detectDevice()==="mobile"){
-    telegram.href = `tg://msg_url?url=${encoded}&text=ទីតាំងពិធីមង្គលការ`;
-    telegram.onclick = function(e){
-      setTimeout(()=>window.open(`https://t.me/share/url?url=${encoded}&text=ទីតាំងពិធីមង្គលការ`, "_blank"),500);
-    }
-  } else { telegram.href = `https://t.me/share/url?url=${encoded}&text=ទីតាំងពិធីមង្គលការ`; }
-}
-function openShareModal(){
-  const modal = document.getElementById("shareModal");
-  const content = document.getElementById("modalContent");
-  modal.style.display="block";
-  setTimeout(()=>{ content.classList.add("show"); },50);
-  setShareLinks(currentMapLink);
-  document.getElementById("mapQR").src = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(currentMapLink)}&size=200x200`;
-}
-function closeShareModal(){
-  const content = document.getElementById("modalContent");
-  content.classList.remove("show");
-  setTimeout(()=>{ document.getElementById("shareModal").style.display="none"; },400);
-}
-function downloadMapQR(){
-  const img=document.getElementById("mapQR"); const link=document.createElement("a"); link.href=img.src; link.download="WeddingMapQR.png"; document.body.appendChild(link); link.click(); document.body.removeChild(link);
-}
-
-
-// Floating hearts
-const weddingImage = document.querySelector(".center-img");
-const loveTexts = ["❤️","💕"];
-const colors = ["#ff6b6b","#ff8787","#ffa8a8","#ffd6d6","#fff0f0"];
-const maxFloating = 20;
-function createFloating(){
-  if(document.querySelectorAll(".love-floating, .name-floating").length >= maxFloating) return;
-  const floating = document.createElement("div");
-  floating.classList.add("love-floating");
-  const size = Math.random()*18+14; floating.style.fontSize=size+"px";
-  floating.style.color=colors[Math.floor(Math.random()*colors.length)];
-  floating.style.left=Math.random()*(weddingImage.clientWidth-size)+"px";
-  floating.style.bottom="-30px";
-  floating.innerText=loveTexts[Math.floor(Math.random()*loveTexts.length)];
-  const duration = Math.random()*4+3;
-  floating.style.animation=`floatSway ${duration}s linear forwards`;
-  weddingImage.appendChild(floating);
-  setTimeout(()=>floating.remove(), duration*1000);
-}
-setInterval(createFloating,500);
-
-
-// JS for floating people (boy/girl) stickers
-const personImgs = [
-  "https://i.pinimg.com/474x/87/c0/95/87c0954d9a30df14848ac03f1e2641c3.jpg"   // replace with actual girl image link
-];
-
-function createPersonSticker(viewId){
-  const view = document.getElementById(viewId);
-  if(!view) return;
-
-  const sticker = document.createElement("img");
-  sticker.src = personImgs[Math.floor(Math.random()*personImgs.length)];
-  sticker.classList.add("person-floating");
-
-  const angle = Math.random()*2*Math.PI;
-  const distance = Math.random()*120 + 60;
-  sticker.style.setProperty('--x', `${Math.cos(angle)*distance}px`);
-  sticker.style.setProperty('--y', `${-Math.sin(angle)*distance}px`);
-
-  // Random start position inside the view
-  const rect = view.getBoundingClientRect();
-  sticker.style.left = Math.random()*(rect.width-40) + "px";
-  sticker.style.top = Math.random()*(rect.height-40) + "px";
-
-  document.body.appendChild(sticker);
-  const duration = Math.random()*3 + 2;
-  sticker.style.animationDuration = duration+"s";
-
-  setTimeout(()=>sticker.remove(), duration*1000);
-}
-
-// Loop for home, son, daughter views
-function personLoop(){
-  ["home","son","daughter"].forEach(viewId=>{
-    createPersonSticker(viewId);
-  });
-  setTimeout(personLoop, 800);
-}
-personLoop();
-// Page navigation with floating hearts on click
-function loadPage(pageId, btn){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
-  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active-tab'));
-  btn.classList.add('active-tab');
-
-  // Create heart effect when button clicked
-  for(let i=0;i<5;i++){
-    setTimeout(()=>createButtonHeart(btn), i*100);
+  // Page navigation
+  function showPage(pageId, btn){
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
   }
-}
 
-// Create floating heart near button
-function createButtonHeart(btn){
-  const rect = btn.getBoundingClientRect();
-  const heart = document.createElement("div");
-  heart.className = "love-floating";
-  heart.innerText = "❤️";
-  const size = Math.random()*16+14;
-  heart.style.fontSize = size+"px";
-  heart.style.left = rect.left + rect.width/2 - size/2 + "px";
-  heart.style.top = rect.top - size + "px";
-  const angle = Math.random()*2*Math.PI;
-  const distance = Math.random()*60 + 40;
-  heart.style.setProperty('--x', `${Math.cos(angle)*distance}px`);
-  heart.style.setProperty('--y', `${-Math.sin(angle)*distance}px`);
-  const duration = Math.random()*1.5 + 1;
-  heart.style.animation = `stickerFloat ${duration}s linear forwards`;
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(), duration*1000);
-}
+  const mapURL = "https://www.google.com/maps?q=11.7951289,105.3758584&hl=km&z=16";
+  function copyMapLink() {
+    navigator.clipboard.writeText(mapURL).then(()=>alert("Map link copied!"));
+  }
+  function shareMapLink() {
+    if(navigator.share){
+      navigator.share({title:"Wedding Map", text:"Check location:", url: mapURL});
+    } else {
+      alert("Your browser does not support share. Copy link instead.");
+    }
+  }
 
+  // Floating hearts background
+  for(let i=0;i<20;i++){
+    let heart=document.createElement("div");
+    heart.className="heart";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.animationDuration=(5+Math.random()*7)+"s";
+    document.body.appendChild(heart);
+  }
+
+  // Tap hearts effect
+  document.body.addEventListener("click", e=>{
+    const heart=document.createElement("div");
+    heart.className="heart";
+    heart.style.left=e.clientX-9+"px";
+    heart.style.top=e.clientY-9+"px";
+    heart.style.animationDuration="1s";
+    heart.style.opacity=1;
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),1000);
+  });
+
+  // PWA Install
+  let deferredPrompt;
+  const installBtn = document.getElementById("installBtn");
+
+  // Show button for desktop/mobile Chrome
+  window.addEventListener('beforeinstallprompt', e=>{
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display="block";
+  });
+
+  installBtn.addEventListener("click", async ()=>{
+    if(deferredPrompt){
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      console.log(choice.outcome);
+      deferredPrompt = null;
+      installBtn.style.display="none";
+    } else {
+      alert("On iOS Safari, tap Share → Add to Home Screen manually.");
+    }
+  });
+
+  // TEMP: Always show button for testing iOS
+  installBtn.style.display="block";
 </script>
-
 </body>
 </html>
