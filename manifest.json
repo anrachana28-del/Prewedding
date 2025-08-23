@@ -6,9 +6,10 @@
   "background_color": "#ffe6f0",
   "theme_color": "#ff4da6",
   "icons": [
-    { "src": "https://static.vecteezy.com/system/resources/thumbnails/015/166/471/small_2x/pr-initials-letter-wedding-monogram-logos-collection-hand-drawn-modern-minimalistic-and-floral-templates-for-invitation-cards-save-the-date-elegant-identity-for-restaurant-boutique-cafe-in-vector.jpg", "sizes": "192x192", "type": "image/png" },
-    { "src": "https://static.vecteezy.com/system/resources/thumbnails/015/166/471/small_2x/pr-initials-letter-wedding-monogram-logos-collection-hand-drawn-modern-minimalistic-and-floral-templates-for-invitation-cards-save-the-date-elegant-identity-for-restaurant-boutique-cafe-in-vector.jpg", "sizes": "512x512", "type": "image/png" }
+    { "src": "https://www.shutterstock.com/image-vector/initial-logo-letter-rc-heart-260nw-695607019.jpg", "sizes": "192x192", "type": "image/png" },
+    { "src": "https://www.shutterstock.com/image-vector/initial-logo-letter-rc-heart-260nw-695607019.jpg", "sizes": "512x512", "type": "image/png" }
   ]
 }
+
 
 
