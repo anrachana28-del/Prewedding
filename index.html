@@ -6,7 +6,7 @@
   <title>Open Wedding App</title>
   <meta name="theme-color" content="#ff4da6" />
   <style>
-    :root{
+    :root {
       --pink:#ff4da6;
       --rose:#c71585;
       --bg:#fff0f6;
@@ -16,9 +16,10 @@
       font-family:-apple-system,Khmer OS Battambang,"Segoe UI",Roboto,Arial,sans-serif;
       margin:0; padding:32px 20px;
       min-height:100vh;
-      background: radial-gradient(1200px 600px at 50% -200px, #ffe6f0 0%, #fff 60%) no-repeat, var(--bg);
+      background: linear-gradient(135deg,#ffe6f0,#fff5fa);
+      overflow-x:hidden; display:flex; flex-direction:column;
+      align-items:center; gap:18px;
       color:#3a3a3a;
-      display:flex; flex-direction:column; align-items:center; gap:18px;
     }
     h1{color:var(--rose); margin:6px 0 0}
     p.lead{margin:0; color:#7a2b54}
@@ -53,7 +54,7 @@
     .row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
     .small{font-size:12px; opacity:.9}
 
-    /* Loading overlay with two hearts + glow ring */
+    /* Loading overlay */
     .overlay{
       display:none; position:fixed; inset:0; z-index:9999;
       background:rgba(255,240,246,.96);
@@ -74,30 +75,70 @@
       box-shadow:0 0 18px rgba(255,77,166,.6), inset 0 0 10px rgba(255,77,166,.15);
     }
     @keyframes spin{ to { transform:rotate(360deg) } }
+
+    /* Loader beating hearts */
     .heart-pair{display:flex; gap:14px; align-items:center; justify-content:center}
-    .heart{
+    .heart-icon{
       font-size:46px;
       animation:beat 900ms ease-in-out infinite alternate;
       text-shadow:0 0 12px rgba(255,77,166,.45);
     }
-    .heart:nth-child(2){ animation-delay:.45s }
+    .heart-icon:nth-child(2){ animation-delay:.45s }
     @keyframes beat{ from{ transform:scale(1); opacity:.75 } to{ transform:scale(1.35); opacity:1 } }
 
-    /* Debug checklist (hidden unless needed) */
+    /* Troubleshoot */
     details{ margin-top:10px }
     summary{ cursor:pointer; color:#444 }
     ul.check{ margin:8px 0 0 16px }
+
+    /* Floating hearts background */
+    .heart-float {
+      position:absolute;
+      width:18px; height:18px;
+      background:pink;
+      transform:rotate(45deg);
+      border-radius:2px;
+      opacity:0.7;
+      animation: floatUp 10s linear infinite;
+    }
+    .heart-float::before,
+    .heart-float::after {
+      content:"";
+      position:absolute;
+      width:18px; height:18px;
+      background:pink;
+      border-radius:50%;
+    }
+    .heart-float::before { top:-9px; left:0; }
+    .heart-float::after { top:0; left:-9px; }
+
+    @keyframes floatUp {
+      0% { transform:translateY(100vh) scale(0.5) rotate(45deg); opacity:0; }
+      30% { opacity:1; }
+      100% { transform:translateY(-10vh) scale(1.2) rotate(45deg); opacity:0; }
+    }
+
+    /* Hearts container sits behind everything */
+    #hearts-container {
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
   </style>
 </head>
 <body>
+  <div id="hearts-container"></div>
+
   <img alt="Rings" src="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='%23ffbfdf'><path d='M17 7h-2l1-2-2-2-2 2 1 2H8l1.879 1.879A6.99 6.99 0 0 0 7 15a7 7 0 1 0 7-7c-.717 0-1.404.122-2.044.346L17 7zM9 20a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm10-1a5 5 0 0 1-3.536-8.536A5 5 0 1 1 19 19z'/></svg>" />
-  <h1>ស្វាគមន៍មកកាន់ Wedding App 💖</h1>
-  <p class="lead">ជ្រើសរើសបង្ហាញ App ក្នុង Web ឬដំឡើងជា App នៅលើឧបករណ៍របស់អ្នក។</p>
+  <h1>ស្វាគមន៍មកកាន់</h1>
+  <p class="lead">ជ្រើសរើសបង្ហាញ App ក្នុង Web ឬដំឡើងជា App Wedding នៅលើឧបករណ៍របស់អ្នក។</p>
 
   <div class="card">
     <div class="actions">
-      <button id="openBtn" class="btn">🚀 Open Web</button>
-      <button id="installBtn" class="btn">📲 Install App</button>
+      <button id="openBtn" class="btn">Open Web</button>
+      <button id="installBtn" class="btn">Install App</button>
       <a id="openInChromeLink" class="btn secondary" href="#" rel="noopener">Open in Chrome</a>
     </div>
     <div class="hint">URL App ៖ <code id="appLinkText">https://anrachana28-del.github.io/Prewedding-App/</code></div>
@@ -106,9 +147,9 @@
     <div id="iosGuide" class="notice">
       <h3>📱 How to Add to Home Screen (iOS)</h3>
       <ol>
-        <li>បើកនៅក្នុង <b>Safari</b></li>
+        <li>បើកនៅក្នុង <b>Safari ឬ Chrome</b></li>
         <li>ចុច <b>Share</b> (⬆️) នៅខាងក្រោម</li>
-        <li>រមៀលចុះ ហើយជ្រើស <b>Add to Home Screen</b></li>
+        <li>ស្វែងរក ហើយជ្រើស <b>Add to Home Screen</b></li>
         <li>ចុច <b>Add</b> ✅</li>
       </ol>
       <div class="row small" style="margin-top:8px">
@@ -119,17 +160,23 @@
         <span>ឬ Copy link ៖</span>
         <code id="copyable">https://anrachana28-del.github.io/Prewedding-App/</code>
         <button id="copyBtn" class="btn secondary" style="padding:6px 10px">Copy</button>
+        <div>
+          <img src="image1.PNG" alt="Safari instruction screenshot 1" style="width:285px; height:500px;"/>
+        </div>
+        <div>
+          <img src="image2.PNG" alt="Safari instruction screenshot 2" style="width:285px; height:500px;"/>
+        </div>
       </div>
     </div>
 
-    <!-- Troubleshoot (when install not available) -->
+    <!-- Troubleshoot -->
     <details id="troubleshoot" style="display:none">
       <summary>Why can’t I see the Install popup?</summary>
       <ul class="check">
         <li>✅ App URL ត្រូវបំពេញ <code>manifest.json</code> និង <code>service worker</code></li>
         <li>✅ មិននៅក្នុង Incognito / InPrivate</li>
         <li>✅ មិនបានដំឡើងរួចហើយ</li>
-        <li>✅ បើកជាយូរបន្តិច និង interacted មួយចំនួន (criteria របស់ browser)</li>
+        <li>✅ បើកជាយូរបន្តិច និង interacted មួយចំនួន</li>
         <li>✅ Chrome/Edge/Brave ជំនាន់ថ្មី</li>
       </ul>
     </details>
@@ -139,8 +186,8 @@
   <div class="overlay" id="overlay">
     <div class="loader">
       <div class="heart-pair">
-        <div class="heart">❤️</div>
-        <div class="heart">❤️</div>
+        <div class="heart-icon">❤️</div>
+        <div class="heart-icon">❤️</div>
       </div>
     </div>
     <div>⏳ កំពុងដំណើរការ…</div>
@@ -177,29 +224,21 @@
     // Open Web
     $("#openBtn").addEventListener("click", ()=>{
       showOverlay(true);
-      // a tiny delay for effect
       setTimeout(()=>{ window.location.href = APP_URL; }, 500);
     });
 
     // Install flow
     let deferredPrompt = null;
-
-    // If browser supports install prompt (Android/Chrome, Desktop Chromium)
     window.addEventListener("beforeinstallprompt", (e)=>{
       e.preventDefault();
       deferredPrompt = e;
-      // we keep Install button visible always; no auto prompt.
     });
-
-    // App installed callback (optional toast)
     window.addEventListener("appinstalled", ()=>{
       alert("🎉 App installed successfully!");
     });
 
-    // Install Button
     $("#installBtn").addEventListener("click", async ()=>{
       if (isIOS){
-        // iOS cannot show install prompt → show guide
         $("#iosGuide").style.display = "block";
         $("#troubleshoot").style.display = "none";
         return;
@@ -208,11 +247,10 @@
         showOverlay(true);
         try{
           deferredPrompt.prompt();
-          const choice = await deferredPrompt.userChoice; // { outcome: 'accepted'|'dismissed' }
+          const choice = await deferredPrompt.userChoice;
           deferredPrompt = null;
           showOverlay(false);
           if (choice && choice.outcome === "dismissed"){
-            // user closed it; optionally show tips
             $("#troubleshoot").style.display = "block";
           }
         }catch(err){
@@ -221,16 +259,36 @@
           console.warn("Install failed:", err);
         }
       }else{
-        // Not available now → show tips
         $("#troubleshoot").style.display = "block";
       }
     });
 
-    // (Optional) Gently hint iOS users to open in Safari for A2HS
     document.addEventListener("DOMContentLoaded", ()=>{
       if (isIOS){
-        $("#iosGuide").style.display = "none"; // only show when pressing Install
+        $("#iosGuide").style.display = "none";
       }
+    });
+
+    // Floating background hearts
+    const heartsContainer = document.getElementById("hearts-container");
+    for (let i=0; i<20; i++) {
+      let heart = document.createElement("div");
+      heart.className = "heart-float";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (5 + Math.random()*7) + "s";
+      heartsContainer.appendChild(heart);
+    }
+
+    // Tap hearts effect
+    document.body.addEventListener("click", (e)=>{
+      const heart = document.createElement("div");
+      heart.className = "heart-float";
+      heart.style.left = e.clientX - 9 + "px";
+      heart.style.top = e.clientY - 9 + "px";
+      heart.style.animationDuration = "1s";
+      heart.style.opacity = 1;
+      heartsContainer.appendChild(heart);
+      setTimeout(()=>heart.remove(), 1000);
     });
   </script>
 </body>
