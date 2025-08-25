@@ -1,176 +1,175 @@
 <!DOCTYPE html>
-<html lang="km">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>My Pink Wedding App</title>
-<link rel="manifest" href="manifest.json">
-<style>
-  body {
-    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,sans-serif;
-    background: linear-gradient(135deg,#ffe6f0,#fff5fa);
-    overflow:hidden; display:flex; flex-direction:column; height:100vh; position:relative;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Wedding App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: #fff0f6;
+    }
+    h1 { color: #c71585; }
+    .btn {
+      background: #ff4da6;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .notice {
+      background: #ffe6f0;
+      color: #c71585;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      display: none;
+    }
+    code {
+      background: #f5f5f5;
+      padding: 3px 6px;
+      border-radius: 5px;
+    }
 
-  /* Floating hearts background */
-  .heart {
-    position:absolute; width:18px; height:18px; background:pink; transform:rotate(45deg);
-    border-radius:2px; opacity:0.7; animation: floatUp 10s linear infinite;
-  }
-  .heart::before, .heart::after {
-    content:""; position:absolute; width:18px; height:18px; background:pink; border-radius:50%;
-  }
-  .heart::before { top:-9px; left:0; }
-  .heart::after { left:-9px; top:0; }
+    /* Loading Overlay */
+    .loading {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(255, 240, 246, 0.95);
+      z-index: 9999;
+      text-align: center;
+      padding-top: 200px;
+      font-size: 18px;
+      color: #c71585;
+    }
 
-  @keyframes floatUp {
-    0% { transform:translateY(100vh) scale(0.5) rotate(45deg); opacity:0; }
-    30% { opacity:1; }
-    100% { transform:translateY(-10vh) scale(1.2) rotate(45deg); opacity:0; }
-  }
-
-  .app-header { background:#ff4da6; color:white; padding:15px; text-align:center; font-size:20px; font-weight:bold; border-bottom-left-radius:15px; border-bottom-right-radius:15px; box-shadow:0 2px 5px rgba(0,0,0,0.1); z-index:2; }
-
-  .app-container { flex:1; padding:20px; overflow-y:auto; z-index:2; }
-
-  .card { background:white; border-radius:20px; box-shadow:0 5px 15px rgba(0,0,0,0.1); padding:20px; margin-bottom:20px; transition: transform 0.2s ease; text-align:center; }
-  .card:hover { transform:translateY(-5px); }
-  .card h2 { margin:10px 0 5px 0; color:#ff4da6; }
-  .card p { color:#444; line-height:1.5; }
-  .card img { width:120px; height:120px; border-radius:50%; object-fit:cover; margin-bottom:10px; border:3px solid #ffb6c1; }
-
-  .btn { display:inline-block; padding:12px 20px; background:#ff4da6; color:white; border:none; border-radius:12px; font-size:16px; cursor:pointer; overflow:hidden; position:relative; }
-  .btn:hover { background:#e63e90; }
-
-  .bottom-nav { display:flex; justify-content:space-around; background:#fff; padding:10px; border-top:1px solid #eee; box-shadow:0 -2px 5px rgba(0,0,0,0.05); z-index:2; }
-  .nav-btn { text-align:center; font-size:14px; color:#555; cursor:pointer; transition:0.3s; }
-  .nav-btn.active { color:#ff4da6; font-weight:bold; text-shadow:0 0 8px rgba(255,77,166,0.7); }
-
-  #installBtn { position:fixed; bottom:80px; right:20px; z-index:1000; display:none; }
-
-  .view { display:none; }
-  .view.active { display:block; }
-
-  iframe { width:100%; height:300px; border-radius:15px; border:0; }
-</style>
+    /* Two hearts animation */
+    .hearts {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .heart {
+      font-size: 50px;
+      animation: beat 1s infinite alternate;
+      color: #ff4da6;
+      text-shadow: 0 0 15px rgba(255,77,166,0.6);
+    }
+    .heart:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+    @keyframes beat {
+      0% { transform: scale(1); opacity: 0.7; }
+      100% { transform: scale(1.4); opacity: 1; }
+    }
+  </style>
 </head>
 <body>
+  <h1>💖 Welcome to Our Wedding App 💖</h1>
+  <p>កំពុងបើក App សម្រាប់អ្នក... សូមរង់ចាំ</p>
 
-<div class="app-header">💖 Wedding App</div>
+  <!-- Fallback Buttons -->
+  <button id="openBtn" class="btn" style="display:none;">🚀 Open App</button>
+  <button id="installBtn" class="btn" style="display:none;">📲 Install App</button>
 
-<!-- Pages -->
-<div class="app-container">
-  <div id="home" class="view active">
-    <div class="card">
-      <h2>សូមស្វាគមន៍!</h2>
-      <p>នេះជាគំរូ App UI PWA style iOS + Android។ ចុច💖 នៅលើ screen ដើម្បីបន្ថែម hearts effect។</p>
-      <button class="btn">ចាប់ផ្តើម</button>
-    </div>
-    <div class="card">
-      <h2>ព័ត៌មានថ្មីៗ</h2>
-      <p>📰 អាចបន្ថែម News Feed, Notifications, និង Content ផ្សេងៗ។</p>
-    </div>
+  <!-- iOS Instructions -->
+  <div id="iosNotice" class="notice">
+    📱 <b>How to Add to Home Screen on iPhone/iPad:</b><br><br>
+    1. ចុច <b>Share</b> (⬆️ នៅខាងក្រោម browser)<br>
+    2. ជ្រើស <b>Add to Home Screen</b><br>
+    3. ចុច <b>Add</b> ✅<br><br>
+    👉 Safari នឹងបើកដោយស្វ័យប្រវត្តិ<br>
+    👉 ប្រសិនបើអ្នកមាន Chrome អាចចុចតំណខាងក្រោម៖<br><br>
+    <a href="googlechrome://anrachana28-del.github.io/Prewedding-App/" class="btn">Open in Chrome</a><br><br>
+    ឬ Copy link:<br>
+    <code>https://anrachana28-del.github.io/Prewedding-App/</code>
   </div>
 
-  <div id="map" class="view">
-    <h2 style="text-align:center; color:#c71585;">ទីតាំងពិធីមង្គលការ</h2>
-    <iframe id="mapFrame" src="https://www.google.com/maps?q=11.7951289,105.3758584&hl=km&z=16&output=embed" allowfullscreen="" loading="lazy"></iframe>
-    <div style="text-align:center; margin-top:10px;">
-      <button class="btn" onclick="copyMapLink()">📋 Copy Link</button>
-      <button class="btn" onclick="shareMapLink()">🔗 Share Link</button>
+  <!-- Loading Overlay -->
+  <div class="loading" id="loadingOverlay">
+    <div class="hearts">
+      <div class="heart">❤️</div>
+      <div class="heart">❤️</div>
     </div>
+    ⏳ កំពុងបើក App... សូមរង់ចាំ...
   </div>
 
-  <div id="son" class="view">
-    <div class="card">
-      <img src="https://via.placeholder.com/120?text=Son1" alt="កូនប្រុស ១">
-      <h2>កូនប្រុស ១</h2>
-      <p>👦 គឺជាកូនប្រុសរបស់ពួកយើង</p>
-    </div>
-    <div class="card">
-      <img src="https://via.placeholder.com/120?text=Son2" alt="កូនប្រុស ២">
-      <h2>កូនប្រុស ២</h2>
-      <p>👦 គឺជាកូនប្រុសរបស់ពួកយើង</p>
-    </div>
-  </div>
-</div>
+  <script>
+    const appUrl = "anrachana28-del.github.io/Prewedding-App/";
+    let deferredPrompt;
 
-<div class="bottom-nav">
-  <div class="nav-btn active" onclick="showPage('home', this)">🏠 Home</div>
-  <div class="nav-btn" onclick="showPage('map', this)">🗺️ Map</div>
-  <div class="nav-btn" onclick="showPage('son', this)">👦 កូនប្រុស</div>
-</div>
+    function isIos() { return /iphone|ipad|ipod/i.test(navigator.userAgent); }
+    function isAndroid() { return /android/i.test(navigator.userAgent); }
 
-<!-- Install button -->
-<button id="installBtn" class="btn">📲 Install App</button>
-
-<script>
-  // Page navigation
-  function showPage(pageId, btn){
-    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
-    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-  }
-
-  const mapURL = "https://www.google.com/maps?q=11.7951289,105.3758584&hl=km&z=16";
-  function copyMapLink() {
-    navigator.clipboard.writeText(mapURL).then(()=>alert("Map link copied!"));
-  }
-  function shareMapLink() {
-    if(navigator.share){
-      navigator.share({title:"Wedding Map", text:"Check location:", url: mapURL});
-    } else {
-      alert("Your browser does not support share. Copy link instead.");
+    function showLoading() {
+      document.getElementById("loadingOverlay").style.display = "block";
     }
-  }
 
-  // Floating hearts background
-  for(let i=0;i<20;i++){
-    let heart=document.createElement("div");
-    heart.className="heart";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.animationDuration=(5+Math.random()*7)+"s";
-    document.body.appendChild(heart);
-  }
+    // Save event for install
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
 
-  // Tap hearts effect
-  document.body.addEventListener("click", e=>{
-    const heart=document.createElement("div");
-    heart.className="heart";
-    heart.style.left=e.clientX-9+"px";
-    heart.style.top=e.clientY-9+"px";
-    heart.style.animationDuration="1s";
-    heart.style.opacity=1;
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),1000);
-  });
+    // Auto detect on load
+    window.addEventListener("load", async () => {
+      showLoading();
 
-  // PWA Install
-  let deferredPrompt;
-  const installBtn = document.getElementById("installBtn");
+      setTimeout(async () => {
+        if (isIos()) {
+          // iOS cannot auto install → just open Safari link
+          document.getElementById("iosNotice").style.display = "block";
+          document.getElementById("openBtn").style.display = "inline-block";
+          window.location.href = "https://" + appUrl;
+        }
+        else if (deferredPrompt) {
+          // Android/Chrome → show install popup
+          deferredPrompt.prompt();
+          const choice = await deferredPrompt.userChoice;
+          if (choice.outcome === "accepted") {
+            deferredPrompt = null;
+            window.location.href = "https://" + appUrl;
+          } else {
+            document.getElementById("openBtn").style.display = "inline-block";
+            document.getElementById("installBtn").style.display = "inline-block";
+          }
+          document.getElementById("loadingOverlay").style.display = "none";
+        }
+        else {
+          // Fallback → just open app
+          window.location.href = "https://" + appUrl;
+        }
+      }, 2000); // 2s delay for animation
+    });
 
-  // Show button for desktop/mobile Chrome
-  window.addEventListener('beforeinstallprompt', e=>{
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display="block";
-  });
+    // Manual Open button
+    document.getElementById("openBtn").addEventListener("click", () => {
+      showLoading();
+      setTimeout(() => {
+        window.location.href = "https://" + appUrl;
+      }, 1000);
+    });
 
-  installBtn.addEventListener("click", async ()=>{
-    if(deferredPrompt){
-      deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      console.log(choice.outcome);
-      deferredPrompt = null;
-      installBtn.style.display="none";
-    } else {
-      alert("On iOS Safari, tap Share → Add to Home Screen manually.");
-    }
-  });
-
-  // TEMP: Always show button for testing iOS
-  installBtn.style.display="block";
-</script>
+    // Manual Install button
+    document.getElementById("installBtn").addEventListener("click", async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      } else {
+        alert("❗ Your browser does not support install popup.");
+      }
+    });
+  </script>
 </body>
 </html>
